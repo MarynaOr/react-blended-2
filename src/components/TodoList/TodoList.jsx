@@ -6,13 +6,13 @@ import TodoListItem from "../TodoListItem/TodoListItem";
 
 
 
-const TodoList = ({todos, deleteTodos}) => {
+const TodoList = ({todos, onDelete}) => {
   return (
     <Grid>
         {
             todos.map((todo) => (
                 <GridItem key={todo.id}>
-                    <TodoListItem todo={todo} />
+                    <TodoListItem todo={todo} onDelete={onDelete} />
                 </GridItem>
             ))
         }

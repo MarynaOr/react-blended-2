@@ -1,14 +1,22 @@
 // import Text from '../components/Text/Text';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Form from '../components/Form/Form';
 import TodoList from '../components/TodoList/TodoList';
 
 const Todos = () => {
-  const [todos, setTodos] = useState([]);
+  const [todos, setTodos] = useState(() => {
+    const saveTodos = JSON.parse(localStorage.getItem('todos'))
+    return saveTodos ? saveTodos : []
+  } );
+
+  useEffect(() => {
+    localStorage.setItem('todos', JSON.stringify(todos))
+  }, [todos])
 
   const addNewTodo = inputValue => {
+    
     const searchResults = {
-      id: todos.length + 1,
+      id: crypto.randomUUID(),
       text: inputValue,
     };
     setTodos(prev => [...prev, searchResults]);
@@ -19,15 +27,18 @@ const Todos = () => {
   
 
 
-  const deleteTodos = () => {
+  const deleteTodos = (id) => {
     setTodos((prev) => prev.filter((item) => item.id !== id))
+  
+
+  
   };
 
   return (
     <>
       <Form onSubmit={addNewTodo} />
 
-      <TodoList todos={todos} deleteTodos={deleteTodos} />
+      <TodoList todos={todos} onDelete={deleteTodos} />
     </>
   );
 };
